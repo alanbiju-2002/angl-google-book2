@@ -1,0 +1,67 @@
+<div class="container">
+      <header class="header">
+        <h1>Google Books Explorer</h1>
+        <div class="search-container">
+          <input 
+            type="text" 
+            [(ngModel)]="searchQuery" 
+            (keyup.enter)="searchBooks()"
+            placeholder="Search for books..."
+            class="search-input">
+          <button (click)="searchBooks()" class="search-btn">Search</button>
+        </div>
+      </header>
+
+      <div class="loading" *ngIf="loading">
+        <div class="spinner"></div>
+        Loading books...
+      </div>
+
+      <div class="books-grid" *ngIf="!loading && books.length > 0">
+        <div 
+          class="book-card" 
+          *ngFor="let book of books; trackBy: trackByFn"
+          (click)="viewBookDetails(book.id)">
+          <div class="book-cover">
+            <img 
+              [src]="getBookImage(book)" 
+              [alt]="book.volumeInfo.title"
+              (error)="onImageError($event)">
+          </div>
+          <div class="book-info">
+            <h3 class="book-title">{{ book.volumeInfo.title }}</h3>
+            <p class="book-authors" *ngIf="book.volumeInfo.authors">
+              {{ book.volumeInfo.authors.join(', ') }}
+            </p>
+            <p class="book-publisher" *ngIf="book.volumeInfo.publisher">
+              {{ book.volumeInfo.publisher }}
+            </p>
+            <span class="book-date" *ngIf="book.volumeInfo.publishedDate">
+              {{ book.volumeInfo.publishedDate }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination" *ngIf="!loading && books.length > 0">
+        <button 
+          (click)="previousPage()" 
+          [disabled]="currentPage === 0"
+          class="page-btn">
+          Previous
+        </button>
+        <span class="page-info">
+          Page {{ currentPage + 1 }} | Showing {{ books.length }} books
+        </span>
+        <button 
+          (click)="nextPage()" 
+          [disabled]="books.length < maxResults"
+          class="page-btn">
+          Next
+        </button>
+      </div>
+
+      <div class="no-results" *ngIf="!loading && books.length === 0">
+        <p>No books found. Try a different search term.</p>
+      </div>
+    </div>

@@ -1,0 +1,79 @@
+
+<div class="container" *ngIf="!loading && book">
+      <div class="back-button">
+        <button (click)="goBack()" class="btn-back">
+          ← Back to Books
+        </button>
+      </div>
+
+      <div class="book-detail">
+        <div class="book-cover-large">
+          <img 
+            [src]="getBookImage()" 
+            [alt]="book.volumeInfo.title"
+            (error)="onImageError($event)">
+        </div>
+
+        <div class="book-info">
+          <h1 class="book-title">{{ book.volumeInfo.title }}</h1>
+          
+          <div class="book-meta">
+            <p *ngIf="book.volumeInfo.authors" class="authors">
+              <strong>Authors:</strong> {{ book.volumeInfo.authors.join(', ') }}
+            </p>
+            
+            <p *ngIf="book.volumeInfo.publisher" class="publisher">
+              <strong>Publisher:</strong> {{ book.volumeInfo.publisher }}
+            </p>
+            
+            <p *ngIf="book.volumeInfo.publishedDate" class="published-date">
+              <strong>Published:</strong> {{ book.volumeInfo.publishedDate }}
+            </p>
+            
+            <p *ngIf="book.volumeInfo.pageCount" class="page-count">
+              <strong>Pages:</strong> {{ book.volumeInfo.pageCount }}
+            </p>
+            
+            <p *ngIf="book.volumeInfo.categories" class="categories">
+              <strong>Categories:</strong> {{ book.volumeInfo.categories.join(', ') }}
+            </p>
+            
+            <p *ngIf="book.volumeInfo.language" class="language">
+              <strong>Language:</strong> {{ book.volumeInfo.language.toUpperCase() }}
+            </p>
+          </div>
+
+          <div class="description" *ngIf="book.volumeInfo.description">
+            <h3>Description</h3>
+            <div [innerHTML]="book.volumeInfo.description" class="description-text"></div>
+          </div>
+
+          <div class="actions">
+            <a 
+              *ngIf="book.volumeInfo.previewLink" 
+              [href]="book.volumeInfo.previewLink" 
+              target="_blank"
+              class="btn btn-primary">
+              Preview Book
+            </a>
+            <a 
+              *ngIf="book.volumeInfo.infoLink" 
+              [href]="book.volumeInfo.infoLink" 
+              target="_blank"
+              class="btn btn-secondary">
+              More Info
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      <div class="spinner"></div>
+      Loading book details...
+    </div>
+
+    <div class="error" *ngIf="!loading && !book">
+      <p>Book not found or failed to load.</p>
+      <button (click)="goBack()" class="btn btn-primary">Go Back</button>
+    </div>

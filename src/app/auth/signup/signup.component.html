@@ -1,0 +1,87 @@
+<div class="auth-container">
+      <div class="auth-card">
+        <h2>Create Account</h2>
+        <p class="subtitle">Join us today!</p>
+        
+        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="auth-form">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input
+              id="fullName"
+              type="text"
+              formControlName="fullName"
+              placeholder="Enter your full name"
+              [class.error]="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched"
+            />
+            <div class="error-message" *ngIf="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched">
+              <span *ngIf="signupForm.get('fullName')?.errors?.['required']">Full name is required</span>
+              <span *ngIf="signupForm.get('fullName')?.errors?.['minlength']">Name must be at least 2 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              id="email"
+              type="email"
+              formControlName="emailId"
+              placeholder="Enter your email"
+              [class.error]="signupForm.get('emailId')?.invalid && signupForm.get('emailId')?.touched"
+            />
+            <div class="error-message" *ngIf="signupForm.get('emailId')?.invalid && signupForm.get('emailId')?.touched">
+              <span *ngIf="signupForm.get('emailId')?.errors?.['required']">Email is required</span>
+              <span *ngIf="signupForm.get('emailId')?.errors?.['email']">Please enter a valid email</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="Create a password"
+              [class.error]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
+            />
+            <div class="error-message" *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+              <span *ngIf="signupForm.get('password')?.errors?.['required']">Password is required</span>
+              <span *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              formControlName="confirmPassword"
+              placeholder="Confirm your password"
+              [class.error]="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched"
+            />
+            <div class="error-message" *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched">
+              <span *ngIf="signupForm.get('confirmPassword')?.errors?.['required']">Please confirm your password</span>
+            </div>
+            <div class="error-message" *ngIf="signupForm.errors?.['passwordMismatch'] && signupForm.get('confirmPassword')?.touched">
+              Passwords do not match
+            </div>
+          </div>
+
+          <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+          </div>
+
+          <div class="success-message" *ngIf="successMessage">
+            {{ successMessage }}
+          </div>
+
+          <button type="submit" [disabled]="signupForm.invalid || isLoading" class="auth-button">
+            <span *ngIf="!isLoading">Create Account</span>
+            <span *ngIf="isLoading">Creating Account...</span>
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Already have an account? <a routerLink="/login">Sign in here</a></p>
+        </div>
+      </div>
+    </div>
